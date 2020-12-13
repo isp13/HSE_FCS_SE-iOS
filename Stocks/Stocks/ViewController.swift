@@ -45,7 +45,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.loadMoreCompanies()
     }
-
+    
+    /// make a request to server to get metric
+    /// - Parameter company: which company metrics need to request
     private func requestQuote(for company: String) {
         let url = URL(string: "https://finnhub.io/api/v1/stock/metric?symbol=\(company)&metric=all&token=\(apiKey)")!
         
@@ -68,6 +70,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         dataTask.resume()
     }
     
+    
+    /// function to parse data
+    /// - Parameter data: data to parse from
     private func parseQuote(data: Data) {
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data)
@@ -93,6 +98,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
     }
     
+    
+    /// Update UI (label text)
     private func requestQuoteUpdate() {
         self.activityIndicator.startAnimating()
         
@@ -112,6 +119,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         self.requestQuote(for: selectedSymbol)
     }
 
+    
+    /// retrive data from dict and update UI
+    /// - Parameter companyInfo: some data about company stocks
     private func displayStockInfo(companyInfo: [String: Any]) {
         self.activityIndicator.stopAnimating()
         
@@ -137,6 +147,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
     }
     
+    /// load more copanies from server to fetch their data
     private func loadMoreCompanies() {
         let url = URL(string: "https://finnhub.io/api/v1/stock/symbol?exchange=US&token=\(apiKey)")!
         
@@ -159,6 +170,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         dataTask.resume()
     }
     
+    
+    /// iterate companies data array and update pciker view with it
+    /// - Parameter data: companies retrieved from server data
     private func parseCompanies(data: Data) {
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data)
